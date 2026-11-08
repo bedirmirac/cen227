@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Araç Filosu | CEN227 Rent a Car</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚗</text></svg>">
+</head>
+<body>
+
+  <!-- Proje Akış Çubuğu (PDF Gereksinimi: 1. Liste -> 2. Detay -> 3. Form -> 4. Tablo) -->
+  <div class="flow-bar">
+    <div class="container">
+      <div class="flow-steps">
+        <div class="flow-step active" data-page="index.html">
+          <div class="flow-step-num">1</div>
+          <span>Araç Filosu (Liste Sayfası)</span>
+        </div>
+        <div class="flow-divider">→</div>
+        <div class="flow-step" data-page="detail.html">
+          <div class="flow-step-num">2</div>
+          <span>Araç Detayı (Detay Sayfası)</span>
+        </div>
+        <div class="flow-divider">→</div>
+        <div class="flow-step" data-page="booking.html">
+          <div class="flow-step-num">3</div>
+          <span>Kiralama Formu (Form Sayfası)</span>
+        </div>
+        <div class="flow-divider">→</div>
+        <div class="flow-step" data-page="pricing.html">
+          <div class="flow-step-num">4</div>
+          <span>Fiyat Çizelgesi (Tablo Sayfası)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ana Navigasyon Çubuğu -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon">🚘</div>
+        <div class="brand-text">CEN<span>RENT</span></div>
+      </a>
+
+      <button class="mobile-toggle" aria-label="Menüyü Aç/Kapat">☰</button>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">🚗 Araç Filosu</a></li>
+        <li><a href="detail.html?id=1">🔍 Araç Detayı</a></li>
+        <li><a href="booking.html">📝 Kiralama Formu</a></li>
+        <li><a href="pricing.html">📊 Fiyat Tablosu <span class="nav-badge">Yeni</span></a></li>
+        <li><a href="booking.html" class="btn btn-sm btn-primary nav-cta">Hemen Kirala</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Hero Bölümü -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <span class="hero-subtitle">CEN227 İnternet Programcılığı Projesi</span>
+        <h1 class="hero-title">En Yeni Model Araçlarla <span>Güvenli & Konforlu</span> Sürüş Deneyimi</h1>
+        <p class="hero-desc">Ekonomi sınıfından lüks segmente, SUV'lardan tam elektrikli modellere kadar geniş araç filomuzdan dilediğinizi seçin, avantajlı günlük ve haftalık fiyatlarla hemen kiralayın.</p>
+        
+        <div class="hero-stats">
+          <div class="hero-stat-item">
+            <h3>10+</h3>
+            <p>Premium Araç Modeli</p>
+          </div>
+          <div class="hero-stat-item">
+            <h3>%20'ye Varan</h3>
+            <p>Haftalık Kiralama İndirimi</p>
+          </div>
+          <div class="hero-stat-item">
+            <h3>4.9 ★</h3>
+            <p>Müşteri Memnuniyeti</p>
+          </div>
+          <div class="hero-stat-item">
+            <h3>7/24</h3>
+            <p>Yol Yardım & Destek</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filtreler ve Araç Listesi Ana İçeriği -->
+  <main class="container" style="margin-top: 35px;">
+    
+    <!-- Arama ve Filtreleme Kartı -->
+    <div class="filter-card">
+      <div class="filter-grid">
+        <div class="form-group">
+          <label class="form-label" for="fleet-search">🔍 Araç veya Marka Ara</label>
+          <input type="text" id="fleet-search" class="form-control" placeholder="Örn: Renault Clio, BMW, Hibrit, Dizel...">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="transmission-filter">⚙️ Şanzıman Tipi</label>
+          <select id="transmission-filter" class="form-select">
+            <option value="all">Tüm Vites Tipleri</option>
+            <option value="Otomatik">Yalnızca Otomatik</option>
+            <option value="Manuel">Yalnızca Manuel</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="sort-select">⇅ Sıralama Ölçütü</label>
+          <select id="sort-select" class="form-select">
+            <option value="default">Varsayılan Sıralama</option>
+            <option value="price-asc">Fiyat: Düşükten Yükseğe</option>
+            <option value="price-desc">Fiyat: Yüksekten Düşüğe</option>
+            <option value="rating-desc">En Yüksek Puanlılar</option>
+            <option value="brand-asc">Marka Adına Göre (A-Z)</option>
+          </select>
+        </div>
+
+        <div>
+          <button id="clear-filters-btn" class="btn btn-outline" style="width: 100%;">
+            Filtreleri Sıfırla
+          </button>
+        </div>
+      </div>
+
+      <!-- Kategori Hap Butonları -->
+      <div class="category-pills">
+        <span style="font-size: 0.85rem; font-weight: 700; color: #475569; align-self: center; margin-right: 8px;">Kategoriler:</span>
+        <button class="pill-btn active" data-category="all">Tümü</button>
+        <button class="pill-btn" data-category="Ekonomi">Ekonomi</button>
+        <button class="pill-btn" data-category="Kompakt">Kompakt</button>
+        <button class="pill-btn" data-category="Sedan">Sedan</button>
+        <button class="pill-btn" data-category="SUV">SUV</button>
+        <button class="pill-btn" data-category="Lüks">Lüks</button>
+        <button class="pill-btn" data-category="Elektrikli">⚡ Elektrikli</button>
+      </div>
+    </div>
+
+    <!-- Sonuç Başlığı ve Sayaç -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <div>
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: #0f172a;">Kiralık Araç Filomuz</h2>
+        <p style="font-size: 0.88rem; color: #64748b;">İncelemek istediğiniz aracın detaylarına tıklayarak teknik bilgileri ve kiralama şartlarını görebilirsiniz.</p>
+      </div>
+      <div id="fleet-result-count" style="font-size: 0.9rem; font-weight: 700; color: #2563eb; background: #eff6ff; padding: 6px 14px; border-radius: 20px;">
+        Yükleniyor...
+      </div>
+    </div>
+
+    <!-- Dinamik Araç Kartları Grid (fleet.js tarafından doldurulur) -->
+    <div id="fleet-grid-container" class="car-grid">
+      <!-- JavaScript dinamik kart render alanı -->
+    </div>
+
+    <!-- Avantajlar Bilgi Kutusu -->
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 30px; margin-bottom: 60px;">
+      <h3 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin-bottom: 20px; text-align: center;">Neden Bizim Filomuzu Tercih Etmelisiniz?</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; text-align: center;">
+        <div>
+          <div style="font-size: 2.2rem; margin-bottom: 8px;">🛡️</div>
+          <h4 style="font-weight: 700; font-size: 1rem; margin-bottom: 4px;">Tam Güvence & Kasko</h4>
+          <p style="font-size: 0.85rem; color: #64748b;">Tüm araçlarımız periyodik yetkili servis bakımlı ve kaskoludur.</p>
+        </div>
+        <div>
+          <div style="font-size: 2.2rem; margin-bottom: 8px;">🏷️</div>
+          <h4 style="font-weight: 700; font-size: 1rem; margin-bottom: 4px;">Haftalık İndirim Oranı</h4>
+          <p style="font-size: 0.85rem; color: #64748b;">7 gün ve üzeri kiralamalarda otomatik %15 - %22 arası indirim uygulanır.</p>
+        </div>
+        <div>
+          <div style="font-size: 2.2rem; margin-bottom: 8px;">🔄</div>
+          <h4 style="font-weight: 700; font-size: 1rem; margin-bottom: 4px;">Ücretsiz İptal / Değişiklik</h4>
+          <p style="font-size: 0.85rem; color: #64748b;">Teslim saatine 24 saat kalana kadar koşulsuz ücretsiz rezervasyon iptali.</p>
+        </div>
+        <div>
+          <div style="font-size: 2.2rem; margin-bottom: 8px;">⚡</div>
+          <h4 style="font-weight: 700; font-size: 1rem; margin-bottom: 4px;">Hızlı Havalimanı Teslimatı</h4>
+          <p style="font-size: 0.85rem; color: #64748b;">İstanbul, Sabiha Gökçen ve Ankara havalimanlarında 5 dakikada anahtar teslimi.</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Alt Bilgi (Footer) -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h4>CENRENT Oto Kiralama</h4>
+          <p>CEN227 İnternet Programcılığı Dersi Vize Projesi kapsamında hazırlanmış dinamik 4 sayfalı web uygulamasıdır.</p>
+          <div style="margin-top: 14px; font-size: 0.82rem; color: #94a3b8;">
+            Teknolojiler: HTML5, Modern CSS3, JavaScript ES6 (DOM Manipülasyonu, URL Parametreleri, LocalStorage, Form Doğrulama).
+          </div>
+        </div>
+        <div class="footer-links">
+          <h5>Proje Sayfaları (PDF Akışı)</h5>
+          <ul>
+            <li><a href="index.html">1. Araç Filosu (Liste)</a></li>
+            <li><a href="detail.html?id=1">2. Araç Detayı (Detay)</a></li>
+            <li><a href="booking.html">3. Kiralama Formu (Form)</a></li>
+            <li><a href="pricing.html">4. Fiyat Tablosu (Tablo)</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h5>İletişim & Lokasyon</h5>
+          <ul>
+            <li>📍 Üniversite Kampüsü / Teknoloji Merkezi</li>
+            <li>📞 +90 (850) 555 22 27</li>
+            <li>✉️ destek@cenrent.com</li>
+            <li>⏰ 7 Gün 24 Saat Kesintisiz Hizmet</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>&copy; 2026 CEN227 Midterm Project. Tüm Hakları Saklıdır.</div>
+        <div>GitHub Repository Teslimi İçin Hazırlanmıştır.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scriptler -->
+  <script src="js/cars-data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/fleet.js"></script>
+</body>
+</html>

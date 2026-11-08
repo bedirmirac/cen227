@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Günlük & Haftalık Fiyat Tablosu | CEN227 Rent a Car</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+</head>
+<body>
+
+  <!-- Proje Akış Çubuğu (PDF Gereksinimi: 1. Liste -> 2. Detay -> 3. Form -> 4. Tablo) -->
+  <div class="flow-bar">
+    <div class="container">
+      <div class="flow-steps">
+        <a href="index.html" class="flow-step" data-page="index.html">
+          <div class="flow-step-num">1</div>
+          <span>Araç Filosu (Liste)</span>
+        </a>
+        <div class="flow-divider">→</div>
+        <a href="detail.html?id=1" class="flow-step" data-page="detail.html">
+          <div class="flow-step-num">2</div>
+          <span>Araç Detayı (Detay)</span>
+        </a>
+        <div class="flow-divider">→</div>
+        <a href="booking.html" class="flow-step" data-page="booking.html">
+          <div class="flow-step-num">3</div>
+          <span>Kiralama Formu (Form)</span>
+        </a>
+        <div class="flow-divider">→</div>
+        <div class="flow-step active" data-page="pricing.html">
+          <div class="flow-step-num">4</div>
+          <span>Fiyat Çizelgesi (Tablo Sayfası)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ana Navigasyon Çubuğu -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon">🚘</div>
+        <div class="brand-text">CEN<span>RENT</span></div>
+      </a>
+
+      <button class="mobile-toggle" aria-label="Menüyü Aç/Kapat">☰</button>
+
+      <ul class="nav-links">
+        <li><a href="index.html">🚗 Araç Filosu</a></li>
+        <li><a href="detail.html?id=1">🔍 Araç Detayı</a></li>
+        <li><a href="booking.html">📝 Kiralama Formu</a></li>
+        <li><a href="pricing.html" class="active">📊 Fiyat Tablosu <span class="nav-badge">Yeni</span></a></li>
+        <li><a href="booking.html" class="btn btn-sm btn-primary nav-cta">Hemen Kirala</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Sayfa Üst Başlık -->
+  <section class="page-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="index.html">Ana Sayfa</a>
+        <span class="breadcrumb-separator">/</span>
+        <span>Günlük ve Haftalık Fiyat Tablosu</span>
+      </div>
+      <div class="page-header-content">
+        <div>
+          <h1 class="page-title">Günlük & Haftalık Fiyat Tablosu</h1>
+          <p class="page-subtitle">Tüm araç filomuzun kiralama tarifelerini, haftalık indirim oranlarını ve depozito tutarlarını tek bir tabloda karşılaştırın.</p>
+        </div>
+        <div>
+          <a href="booking.html" class="btn btn-primary">
+            📝 Doğrudan Rezervasyon Yap
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ana İçerik -->
+  <main class="container">
+    
+    <!-- 1. Bölüm: Filo İstatistik Özet Kartları (KPI Metrics) -->
+    <section class="stats-overview">
+      <div class="stat-metric-card">
+        <div class="metric-icon-circle">🚗</div>
+        <div class="metric-info">
+          <h4>Toplam Araç</h4>
+          <div id="stat-total-cars" class="metric-num">10 Araç</div>
+        </div>
+      </div>
+
+      <div class="stat-metric-card">
+        <div class="metric-icon-circle">📈</div>
+        <div class="metric-info">
+          <h4>Ortalama Günlük Fiyat</h4>
+          <div id="stat-avg-price" class="metric-num">₺0</div>
+        </div>
+      </div>
+
+      <div class="stat-metric-card">
+        <div class="metric-icon-circle">🏷️</div>
+        <div class="metric-info">
+          <h4>En Ekonomik Seçenek</h4>
+          <div id="stat-cheapest-car" class="metric-num" style="font-size: 1rem;">Yükleniyor...</div>
+        </div>
+      </div>
+
+      <div class="stat-metric-card">
+        <div class="metric-icon-circle">🌱</div>
+        <div class="metric-info">
+          <h4>Hibrit & Elektrik</h4>
+          <div id="stat-eco-count" class="metric-num">0 Araç</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Bölüm: Segment Fiyat Karşılaştırma Grafiği (PDF Tablo / Çizelge Gereksinimi) -->
+    <section class="chart-card">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px;">
+        <h3 class="chart-card-title" style="margin-bottom: 0;">📊 Araç Segmentlerine Göre Ortalama Günlük Fiyat Çizelgesi</h3>
+        <span style="font-size: 0.8rem; color: #64748b;">(Segment bazlı ortalama kiralama bedelleri)</span>
+      </div>
+      <div id="price-chart-container" class="chart-bars-wrap">
+        <!-- JS tarafından doldurulur -->
+      </div>
+    </section>
+
+    <!-- 3. Bölüm: Fiyat Tablosu ve Araçlar -->
+    <div class="table-container-card">
+      
+      <!-- Tablo Araç Çubuğu (Arama & Filtreleme) -->
+      <div class="table-toolbar">
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <input type="text" id="table-search-input" class="form-control" style="width: 260px;" placeholder="🔍 Tabloda araç veya marka ara...">
+          
+          <select id="table-category-select" class="form-select" style="width: 180px;">
+            <option value="all">Tüm Kategoriler</option>
+            <option value="Ekonomi">Ekonomi</option>
+            <option value="Kompakt">Kompakt</option>
+            <option value="Sedan">Sedan</option>
+            <option value="SUV">SUV</option>
+            <option value="Lüks">Lüks</option>
+            <option value="Elektrikli">Elektrikli</option>
+          </select>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <span id="table-results-badge" class="badge badge-primary">10 araç listelendi</span>
+          <span style="font-size: 0.8rem; color: #64748b;">(Sıralamak için sütun başlıklarına tıklayabilirsiniz)</span>
+        </div>
+      </div>
+
+      <!-- Duyarlı Fiyat Tablosu -->
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th data-sort="name">
+                Araç & Model <span class="sort-icon">⇅</span>
+              </th>
+              <th data-sort="category">
+                Segment <span class="sort-icon">⇅</span>
+              </th>
+              <th>Vites / Yakıt</th>
+              <th data-sort="dailyPrice">
+                Günlük Fiyat <span class="sort-icon">▲</span>
+              </th>
+              <th data-sort="weeklyPrice">
+                Haftalık Tutar (7 Gün) <span class="sort-icon">⇅</span>
+              </th>
+              <th>Aylık Tahmini</th>
+              <th data-sort="deposit">
+                Depozito <span class="sort-icon">⇅</span>
+              </th>
+              <th>Sürücü Şartı</th>
+              <th style="cursor: default;">İşlem</th>
+            </tr>
+          </thead>
+          <tbody id="pricing-table-body">
+            <!-- JS tarafından doldurulur -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tablo Alt Bilgilendirme -->
+      <div style="padding: 16px 24px; background-color: #f8fafc; border-top: 1px solid #e2e8f0; font-size: 0.82rem; color: #64748b; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+        <div>
+          📌 <strong>Not:</strong> Haftalık fiyatlara %15 ile %22 arasındaki indirimler dahil edilmiştir. Fiyatlara %20 KDV ve zorunlu trafik sigortası dahildir.
+        </div>
+        <div>
+          💳 Provizyon depozitosu araç iadesinden sonra kartınıza iade edilir.
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Alt Bilgi (Footer) -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h4>CENRENT Oto Kiralama</h4>
+          <p>CEN227 İnternet Programcılığı Dersi Vize Projesi kapsamında hazırlanmış dinamik 4 sayfalı web uygulamasıdır.</p>
+        </div>
+        <div class="footer-links">
+          <h5>Sayfa Akışı</h5>
+          <ul>
+            <li><a href="index.html">1. Araç Filosu (Liste)</a></li>
+            <li><a href="detail.html?id=1">2. Araç Detayı (Detay)</a></li>
+            <li><a href="booking.html">3. Kiralama Formu (Form)</a></li>
+            <li><a href="pricing.html">4. Fiyat Tablosu (Tablo)</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h5>İletişim</h5>
+          <ul>
+            <li>📍 Üniversite Kampüsü / Teknoloji Merkezi</li>
+            <li>📞 +90 (850) 555 22 27</li>
+            <li>✉️ destek@cenrent.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>&copy; 2026 CEN227 Midterm Project. Tüm Hakları Saklıdır.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scriptler -->
+  <script src="js/cars-data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/pricing.js"></script>
+</body>
+</html>

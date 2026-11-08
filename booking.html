@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kiralama Formu | CEN227 Rent a Car</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
+</head>
+<body>
+
+  <!-- Proje Akış Çubuğu (PDF Gereksinimi: 1. Liste -> 2. Detay -> 3. Form -> 4. Tablo) -->
+  <div class="flow-bar">
+    <div class="container">
+      <div class="flow-steps">
+        <a href="index.html" class="flow-step" data-page="index.html">
+          <div class="flow-step-num">1</div>
+          <span>Araç Filosu (Liste)</span>
+        </a>
+        <div class="flow-divider">→</div>
+        <a href="detail.html?id=1" class="flow-step" data-page="detail.html">
+          <div class="flow-step-num">2</div>
+          <span>Araç Detayı (Detay)</span>
+        </a>
+        <div class="flow-divider">→</div>
+        <div class="flow-step active" data-page="booking.html">
+          <div class="flow-step-num">3</div>
+          <span>Kiralama Formu (Form Sayfası)</span>
+        </div>
+        <div class="flow-divider">→</div>
+        <a href="pricing.html" class="flow-step" data-page="pricing.html">
+          <div class="flow-step-num">4</div>
+          <span>Fiyat Çizelgesi (Tablo)</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ana Navigasyon Çubuğu -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon">🚘</div>
+        <div class="brand-text">CEN<span>RENT</span></div>
+      </a>
+
+      <button class="mobile-toggle" aria-label="Menüyü Aç/Kapat">☰</button>
+
+      <ul class="nav-links">
+        <li><a href="index.html">🚗 Araç Filosu</a></li>
+        <li><a href="detail.html?id=1">🔍 Araç Detayı</a></li>
+        <li><a href="booking.html" class="active">📝 Kiralama Formu</a></li>
+        <li><a href="pricing.html">📊 Fiyat Tablosu <span class="nav-badge">Yeni</span></a></li>
+        <li><a href="booking.html" class="btn btn-sm btn-primary nav-cta">Hemen Kirala</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Sayfa Üst Başlık -->
+  <section class="page-header">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="index.html">Ana Sayfa</a>
+        <span class="breadcrumb-separator">/</span>
+        <a href="detail.html?id=1">Araç Detayı</a>
+        <span class="breadcrumb-separator">/</span>
+        <span>Kiralama Rezervasyon Formu</span>
+      </div>
+      <div class="page-header-content">
+        <div>
+          <h1 class="page-title">Araç Kiralama ve Rezervasyon Formu</h1>
+          <p class="page-subtitle">Lütfen aşağıdaki kiralama ve sürücü bilgilerini eksiksiz doldurunuz. Fiyat ve süre sağ panelde anlık hesaplanır.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form ve Özet Ana Alanı -->
+  <main class="container">
+    <div class="booking-layout">
+      
+      <!-- Sol Taraf: Rezervasyon Formu -->
+      <div>
+        <form id="rental-booking-form" novalidate>
+          
+          <!-- 1. Adım: Araç ve Lokasyon / Tarih Seçimi -->
+          <div class="form-box">
+            <h3 class="form-box-title">
+              <span class="step-badge">1</span>
+              <span>Araç, Lokasyon ve Tarih Tercihleri</span>
+            </h3>
+
+            <!-- Araç Seçimi -->
+            <div class="form-row single">
+              <div class="form-group">
+                <label class="form-label" for="booking-car-select">🚗 Kiralanacak Aracı Seçiniz *</label>
+                <select id="booking-car-select" class="form-select" required>
+                  <!-- JS dinamik seçenekler -->
+                </select>
+                <span class="form-hint">Listeden veya detay sayfasından yönlendirildiyseniz araç otomatik seçilir.</span>
+              </div>
+            </div>
+
+            <!-- Alış ve Teslim Lokasyonu -->
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="pickup-location">📍 Alış Ofisi / Lokasyon *</label>
+                <select id="pickup-location" class="form-select" required>
+                  <option value="İstanbul Havalimanı (IST)">İstanbul Havalimanı (IST)</option>
+                  <option value="Sabiha Gökçen Havalimanı (SAW)" selected>Sabiha Gökçen Havalimanı (SAW)</option>
+                  <option value="Kadıköy Merkez Şube">Kadıköy Merkez Şube</option>
+                  <option value="Beşiktaş Şube">Beşiktaş Şube</option>
+                  <option value="Ankara Esenboğa Havalimanı (ESB)">Ankara Esenboğa Havalimanı (ESB)</option>
+                  <option value="İzmir Adnan Menderes Havalimanı (ADB)">İzmir Adnan Menderes Havalimanı (ADB)</option>
+                </select>
+                <div id="pickup-location-error" class="form-error"></div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="return-location">🏁 Teslim Ofisi / Lokasyon *</label>
+                <select id="return-location" class="form-select" required>
+                  <option value="Aynı Lokasyon (Sabiha Gökçen)" selected>Alınan Ofisle Aynı Lokasyon</option>
+                  <option value="İstanbul Havalimanı (IST)">İstanbul Havalimanı (IST)</option>
+                  <option value="Sabiha Gökçen Havalimanı (SAW)">Sabiha Gökçen Havalimanı (SAW)</option>
+                  <option value="Kadıköy Merkez Şube">Kadıköy Merkez Şube</option>
+                  <option value="Beşiktaş Şube">Beşiktaş Şube</option>
+                  <option value="Ankara Esenboğa Havalimanı (ESB)">Ankara Esenboğa Havalimanı (ESB)</option>
+                  <option value="İzmir Adnan Menderes Havalimanı (ADB)">İzmir Adnan Menderes Havalimanı (ADB)</option>
+                </select>
+                <div id="return-location-error" class="form-error"></div>
+              </div>
+            </div>
+
+            <!-- Tarih ve Saatler -->
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="pickup-date">📅 Alış Tarihi *</label>
+                <input type="date" id="pickup-date" class="form-control" required>
+                <div id="pickup-date-error" class="form-error"></div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="pickup-time">⏰ Alış Saati</label>
+                <select id="pickup-time" class="form-select">
+                  <option value="09:00">09:00</option>
+                  <option value="10:00" selected>10:00</option>
+                  <option value="12:00">12:00</option>
+                  <option value="14:00">14:00</option>
+                  <option value="16:00">16:00</option>
+                  <option value="18:00">18:00</option>
+                  <option value="20:00">20:00</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="return-date">📅 Teslim Tarihi *</label>
+                <input type="date" id="return-date" class="form-control" required>
+                <div id="return-date-error" class="form-error"></div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="return-time">⏰ Teslim Saati</label>
+                <select id="return-time" class="form-select">
+                  <option value="09:00">09:00</option>
+                  <option value="10:00" selected>10:00</option>
+                  <option value="12:00">12:00</option>
+                  <option value="14:00">14:00</option>
+                  <option value="16:00">16:00</option>
+                  <option value="18:00">18:00</option>
+                  <option value="20:00">20:00</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 2. Adım: Sürücü Bilgileri ve Doğrulama -->
+          <div class="form-box">
+            <h3 class="form-box-title">
+              <span class="step-badge">2</span>
+              <span>Sürücü Kimlik ve İletişim Bilgileri</span>
+            </h3>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="full-name">👤 Ad Soyad *</label>
+                <input type="text" id="full-name" class="form-control" placeholder="Örn: Ahmet Yılmaz" required>
+                <div id="full-name-error" class="form-error"></div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="tc-id">🪪 T.C. Kimlik No *</label>
+                <input type="text" id="tc-id" class="form-control" maxlength="11" placeholder="11 haneli kimlik numarası" required>
+                <div id="tc-id-error" class="form-error"></div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="email">✉️ E-posta Adresi *</label>
+                <input type="email" id="email" class="form-control" placeholder="ornek@domain.com" required>
+                <div id="email-error" class="form-error"></div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="phone">📱 Telefon Numarası *</label>
+                <input type="tel" id="phone" class="form-control" placeholder="05XX XXX XX XX" required>
+                <div id="phone-error" class="form-error"></div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="birth-date">🎂 Doğum Tarihi (Yaş Şartı Kontrolü) *</label>
+                <input type="date" id="birth-date" class="form-control" value="1998-05-15" required>
+                <span class="form-hint">Seçilen araç sınıfının minimum yaş kuralı sistem tarafından otomatik doğrulanır.</span>
+                <div id="birth-date-error" class="form-error"></div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="license-years">🪪 Ehliyet Süresi *</label>
+                <select id="license-years" class="form-select" required>
+                  <option value="1">1 Yıllık Ehliyet</option>
+                  <option value="2">2 Yıllık Ehliyet</option>
+                  <option value="3" selected>3 Yıl ve Üzeri Ehliyet</option>
+                  <option value="5">5 Yıl ve Üzeri Ehliyet</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 3. Adım: Ekstra Donanım & Güvence Paketleri -->
+          <div class="form-box">
+            <h3 class="form-box-title">
+              <span class="step-badge">3</span>
+              <span>Ek Hizmetler ve Güvence Tercihleri</span>
+            </h3>
+
+            <div class="extras-grid">
+              
+              <label class="extra-checkbox-card">
+                <input type="checkbox" id="extra-insurance" class="extra-checkbox">
+                <div class="extra-info">
+                  <h4>🛡️ Tam Kasko (Süper Güvence)</h4>
+                  <p>Cam, far, ayna ve lastik hasarlarını muafiyetsiz teminat altına alır.</p>
+                  <div class="extra-price">+₺350 / Gün</div>
+                </div>
+              </label>
+
+              <label class="extra-checkbox-card">
+                <input type="checkbox" id="extra-driver" class="extra-checkbox">
+                <div class="extra-info">
+                  <h4>👥 İkinci Sürücü Paketi</h4>
+                  <p>Aracı birden fazla sürücünün yasal kasko kapsamında kullanmasını sağlar.</p>
+                  <div class="extra-price">+₺200 / Gün</div>
+                </div>
+              </label>
+
+              <label class="extra-checkbox-card">
+                <input type="checkbox" id="extra-baby-seat" class="extra-checkbox">
+                <div class="extra-info">
+                  <h4>👶 Güvenli Bebek Koltuğu</h4>
+                  <p>0-4 yaş aralığı için ISOFIX uyumlu emniyetli çocuk koltuğu.</p>
+                  <div class="extra-price">+₺150 / Gün</div>
+                </div>
+              </label>
+
+              <label class="extra-checkbox-card">
+                <input type="checkbox" id="extra-hgs" class="extra-checkbox">
+                <div class="extra-info">
+                  <h4>🛣️ HGS & OGS Otoban Geçiş</h4>
+                  <p>Otoyol ve köprü geçişleri için aktif HGS etiketi ve geçiş kredisi.</p>
+                  <div class="extra-price">+₺100 Sabit</div>
+                </div>
+              </label>
+
+            </div>
+          </div>
+
+          <!-- 4. Adım: Ödeme & Şart Onayı -->
+          <div class="form-box">
+            <h3 class="form-box-title">
+              <span class="step-badge">4</span>
+              <span>Ödeme Tercihi ve Kiralama Onayı</span>
+            </h3>
+
+            <div class="form-row">
+              <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 12px; border: 1px solid #e2e8f0; border-radius: 12px;">
+                <input type="radio" name="payment-method" value="office" checked style="accent-color: #2563eb;">
+                <div>
+                  <div style="font-weight: 700; font-size: 0.92rem;">🏢 Ofiste / Teslimatta Ödeme</div>
+                  <div style="font-size: 0.78rem; color: #64748b;">Aracı teslim alırken kredi kartı ile ödeme yapın.</div>
+                </div>
+              </label>
+
+              <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 12px; border: 1px solid #e2e8f0; border-radius: 12px;">
+                <input type="radio" name="payment-method" value="online" style="accent-color: #2563eb;">
+                <div>
+                  <div style="font-weight: 700; font-size: 0.92rem;">💳 Güvenli Online Ödeme</div>
+                  <div style="font-size: 0.78rem; color: #64748b;">3D Secure ile anında ödeyin, %5 ek indirim kazanın.</div>
+                </div>
+              </label>
+            </div>
+
+            <div style="margin-top: 18px;">
+              <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; font-size: 0.86rem; color: #475569;">
+                <input type="checkbox" id="terms-accept" style="margin-top: 3px; accent-color: #2563eb;" required>
+                <span>
+                  <a href="#" style="color: #2563eb; font-weight: 600; text-decoration: underline;">Kiralama Koşulları</a>, 
+                  <a href="#" style="color: #2563eb; font-weight: 600; text-decoration: underline;">KVKK Aydınlatma Metni</a> ve 
+                  depozito provizyon şartlarını okudum, kabul ediyorum.
+                </span>
+              </label>
+            </div>
+
+            <div style="margin-top: 24px;">
+              <button type="submit" id="btn-submit-booking" class="btn btn-primary btn-block" style="padding: 15px; font-size: 1.1rem;">
+                ✓ Rezervasyonu Onayla ve Tamamla
+              </button>
+            </div>
+
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Sağ Taraf: Canlı Hesaplanan Rezervasyon Özeti -->
+      <aside>
+        <div class="summary-sticky">
+          
+          <div class="summary-card">
+            <div class="summary-header">
+              <h3>🧾 Rezervasyon Özeti</h3>
+            </div>
+            
+            <div class="summary-body">
+              
+              <!-- Araç Bilgisi -->
+              <div class="summary-car-preview">
+                <img id="summary-car-img" class="summary-car-img" src="" alt="Seçilen Araç">
+                <div class="summary-car-info">
+                  <h4 id="summary-car-name">Araç Seçiniz</h4>
+                  <p id="summary-car-meta">Ekonomi • Otomatik</p>
+                  <p id="summary-car-daily" style="font-weight: 700; color: #2563eb; margin-top: 4px;">₺0 / gün</p>
+                </div>
+              </div>
+
+              <!-- Fiyat Dökümü -->
+              <div class="summary-breakdown">
+                <div class="summary-item">
+                  <span>Kiralama Süresi:</span>
+                  <strong id="sum-days-label">3 Gün</strong>
+                </div>
+
+                <div class="summary-item">
+                  <span>Araç Kiralama Tutarı:</span>
+                  <span id="sum-base-rent">₺0</span>
+                </div>
+
+                <div id="sum-discount-row" class="summary-item discount" style="display: none;">
+                  <span>Haftalık Süre İndirimi:</span>
+                  <span id="sum-discount-val">-₺0</span>
+                </div>
+
+                <div id="sum-extras-row" class="summary-item strong" style="display: none;">
+                  <span>Seçilen Ek Hizmetler:</span>
+                  <span id="sum-extras-val">+₺0</span>
+                </div>
+
+                <div class="summary-item">
+                  <span>KDV (%20):</span>
+                  <span style="color: #10b981; font-weight: 600;">Fiyata Dahil</span>
+                </div>
+
+                <div class="summary-item" style="border-top: 1px dashed #e2e8f0; padding-top: 8px;">
+                  <span>Depozito Provizyonu (İadeli):</span>
+                  <span id="sum-deposit-val" style="font-weight: 600; color: #0f172a;">₺0</span>
+                </div>
+              </div>
+
+              <!-- Genel Toplam -->
+              <div class="summary-total">
+                <div class="total-label">Ödenecek Tutar:</div>
+                <div id="sum-grand-total" class="total-amount">₺0</div>
+              </div>
+
+              <div style="margin-top: 16px; font-size: 0.78rem; color: #64748b; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                ℹ️ Güvence depozitosu araç teslim alınırken kredi kartınıza bloke konur ve araç iadesinde hasarsızlık kontrolünün ardından açılır.
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Hızlı Fiyat Tablosu Bağlantısı (PDF Flow Adım 4'e Geçiş) -->
+          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; text-align: center;">
+            <p style="font-size: 0.88rem; color: #64748b; margin-bottom: 12px;">Tüm filonun günlük, haftalık ve depozito tablosunu incelemek ister misiniz?</p>
+            <a href="pricing.html" class="btn btn-outline-primary btn-sm btn-block">
+              📊 Günlük & Haftalık Fiyat Tablosunu İncele →
+            </a>
+          </div>
+
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- Başarı / Rezervasyon Onay Modalı -->
+  <div id="booking-success-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header-success">
+        <div class="modal-success-icon">✓</div>
+        <h3>Rezervasyonunuz Alındı!</h3>
+        <p style="font-size: 0.9rem; opacity: 0.9; margin-top: 4px;">Kiralama talebiniz başarıyla onaylandı ve sisteme kaydedildi.</p>
+      </div>
+
+      <div class="modal-body">
+        <div style="text-align: center; margin-bottom: 16px;">
+          <span style="font-size: 0.8rem; color: #64748b; text-transform: uppercase;">Rezervasyon Takip Kodu</span>
+          <div id="modal-voucher-code" style="font-size: 1.5rem; font-weight: 800; color: #2563eb; letter-spacing: 1px;">REZ-2026-XXXX</div>
+        </div>
+
+        <div id="modal-voucher-details" class="voucher-box">
+          <!-- JS tarafından doldurulur -->
+        </div>
+
+        <p style="font-size: 0.82rem; color: #64748b; text-align: center;">
+          Rezervasyon detaylarınız belirttiğiniz e-posta adresine ve telefon numaranıza SMS olarak gönderilmiştir.
+        </p>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-outline btn-sm" onclick="window.print()">🖨️ Yazdır / PDF İndir</button>
+        <a href="pricing.html" class="btn btn-primary btn-sm">📊 Fiyat Tablosuna Git</a>
+        <button class="btn btn-outline btn-sm" onclick="closeModal(); window.location.href='index.html';">Tamamla</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alt Bilgi (Footer) -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h4>CENRENT Oto Kiralama</h4>
+          <p>CEN227 İnternet Programcılığı Dersi Vize Projesi kapsamında hazırlanmış dinamik 4 sayfalı web uygulamasıdır.</p>
+        </div>
+        <div class="footer-links">
+          <h5>Sayfa Akışı</h5>
+          <ul>
+            <li><a href="index.html">1. Araç Filosu (Liste)</a></li>
+            <li><a href="detail.html?id=1">2. Araç Detayı (Detay)</a></li>
+            <li><a href="booking.html">3. Kiralama Formu (Form)</a></li>
+            <li><a href="pricing.html">4. Fiyat Tablosu (Tablo)</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h5>İletişim</h5>
+          <ul>
+            <li>📍 Üniversite Kampüsü / Teknoloji Merkezi</li>
+            <li>📞 +90 (850) 555 22 27</li>
+            <li>✉️ destek@cenrent.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>&copy; 2026 CEN227 Midterm Project. Tüm Hakları Saklıdır.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scriptler -->
+  <script src="js/cars-data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/booking.js"></script>
+</body>
+</html>
